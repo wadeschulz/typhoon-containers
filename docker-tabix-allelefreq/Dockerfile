@@ -28,4 +28,4 @@ WORKDIR $HOME
 
 RUN mkdir calc_allele_freq
 WORKDIR $HOME/calc_allele_freq/
-RUN wget https://raw.githubusercontent.com/wadeschulz/docker-tabix-allelefreq/master/calc_allele_freq.py
+COPY calc_allele_freq.py calc_allele_freq.py
