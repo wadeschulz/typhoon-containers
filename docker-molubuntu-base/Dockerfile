@@ -1,6 +1,10 @@
 ######################################################################################
 # Base Ubuntu image for several NGS bioinformatics tools
-#   Includes g++, build-essential, and python/python-dev
+######################################################################################
+# Version:          0.1.0
+# Software:         Ubuntu with build-essential, g++, python/dev, unzip, wget, zlib1g
+# Software Version: 14.04
+# Base Image:       ubuntu:14.04
 ######################################################################################
 
 FROM ubuntu:14.04

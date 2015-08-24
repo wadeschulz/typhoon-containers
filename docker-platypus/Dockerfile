@@ -1,8 +1,13 @@
 ######################################################################################
-# Dockerfile to install platypus alignment/indel caller. Based on centos image.
+# Dockerfile to install platypus alignment/indel caller.
+######################################################################################
+# Version:          0.1.0
+# Software:         Platypus
+# Software Version: latest
+# Base Image:       molubuntu:0.1.0 <- ubuntu:14.04
 ######################################################################################
 
-FROM molecular/molubuntu
+FROM molecular/molubuntu:0.1.0
 
 MAINTAINER Wade Schulz <wade.schulz@gmail.com>
 

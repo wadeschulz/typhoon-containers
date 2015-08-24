@@ -1,10 +1,15 @@
 ######################################################################################
 # Dockerfile to install tabix/vcftools and grab allele frequency from 1000 Genomes
-# Data. Based on Ubuntu, installation guided by:
+# Data.
 #    http://www.gettinggeneticsdone.com/2011/04/how-to-get-allele-frequencies-and.html
 ######################################################################################
+# Version:          0.1.0
+# Software:         Tabix, VCFtools
+# Software Version: Tabix 0.2.6; VCFtools 0.1.13
+# Base Image:       molubuntu:0.1.0 <- ubuntu:14.04
+######################################################################################
 
-FROM molecular/molubuntu
+FROM molecular/molubuntu:0.1.0
 
 MAINTAINER Wade Schulz <wade.schulz@gmail.com>
 

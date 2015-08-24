@@ -1,8 +1,13 @@
 ######################################################################################
 # Dockerfile to install Bowtie2 alignment software
 ######################################################################################
+# Version:          0.1.0
+# Software:         bowtie2
+# Software Version: 2.2.5
+# Base Image:       molubuntu:0.1.0 <- ubuntu:14.04
+######################################################################################
 
-FROM molecular/molubuntu
+FROM molecular/molubuntu:0.1.0
 
 MAINTAINER Wade Schulz <wade.schulz@gmail.com>
 

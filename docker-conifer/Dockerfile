@@ -1,8 +1,13 @@
 ######################################################################################
 # Dockerfile to install Confifer CNV analysis software
 ######################################################################################
+# Version:          0.1.0
+# Software:         CoNIFER
+# Software Version: 0.2.2
+# Base Image:       molubuntu:0.1.0 <- ubuntu:14.04
+######################################################################################
 
-FROM molecular/molubuntu
+FROM molecular/molubuntu:0.1.0
 
 MAINTAINER Wade Schulz <wade.schulz@gmail.com>
 
