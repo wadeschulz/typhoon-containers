@@ -3,7 +3,7 @@
 #   Includes g++, build-essential, and python/python-dev
 ######################################################################################
 
-FROM ubuntu
+FROM ubuntu:14.04
 
 MAINTAINER Wade Schulz <wade.schulz@gmail.com>
 
