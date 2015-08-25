@@ -27,3 +27,8 @@ RUN sudo pip install \
 RUN wget http://sourceforge.net/projects/conifer/files/CoNIFER%200.2.2/conifer_v0.2.2.tar.gz
 RUN tar -xzvf conifer_v0.2.2.tar.gz
 RUN rm -rf conifer_v0.2.2.tar.gz
+ENV PATH $HOME/conifer_v0.2.2:$PATH
+
+# Requires tables v3.1.1 to avoid HDF5 illegal instruction exception
+RUN sudo pip uninstall -y tables
+RUN sudo pip install tables==3.1.1
