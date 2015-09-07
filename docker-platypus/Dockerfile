@@ -21,6 +21,7 @@ RUN sudo make install
 
 # Download and unzip Platypus
 WORKDIR $HOME
+# Originially tested with version 0.8.1
 RUN wget http://www.well.ox.ac.uk/bioinformatics/Software/Platypus-latest.tgz
 RUN tar -xzvf Platypus-latest.tgz
 RUN rm -rf Platypus-latest.tgz
