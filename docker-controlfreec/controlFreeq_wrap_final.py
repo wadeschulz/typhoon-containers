@@ -7,8 +7,8 @@
 import os
 import sys
 import time
-import logging
 import argparse
+import traceback
 import ConfigParser
 
 from time import strftime, gmtime
@@ -26,15 +26,9 @@ logPath = pgmPath + '/log'
 if not os.path.isdir(logPath):
 	os.makedirs(logPath)
 
-# set output path
-outputPath = pgmPath + '/output'
-if not os.path.isdir(outputPath):
-	os.makedirs(outputPath)
-
-
 
 ###############################################################################
-######### Log file and time stamp
+######### Create file objects
 ###############################################################################
 
 #create time stamp YYMMDD_HH:MM:SS  (Greenwhich mean time)
@@ -50,44 +44,51 @@ logFile = str('controlFreeq_wrap.log.txt')
 
 newUser = "#####################################################################"
 
-#Create conneciton to log file
+#Create connection to log file
 try:
 	pywrapLog = open(os.path.join(logPath, logFile), 'a')
-	pywrapLog.write('\n'+newUser+'\n'+logStamp + "--Successfully opened log file")
+	pywrapLog.write('\n'+newUser+'\n'+logStamp + "-- Successfully opened log file")
 except:
 	pywrapLog.write('\n'+logStamp + 'Invalid pathname, or invalid user permissions\n')
 	raise IOError('Invalid pathname, or invalid user permissions')
 
 
 ###############################################################################
-######### Define Arguments
+######### Classes and functions
 ###############################################################################
+
+# Create function for UNcaught exceptions
+def catchExceptions(exctype, value, tb):
+	pywrapLog.write('\n'+logStamp+'-- '+'UNCAUGHT ERROR')
+	exctype = str(exctype)
+	pywrapLog.write('\n'+'TYPE: ' + exctype)
+	pywrapLog.write('\n'+'VALUE: ' + str(value))
+	tb = traceback.extract_tb(tb)
+	pywrapLog.write('\n'+'TRACEBACK: '+'\n')
+	for item in tb:
+		pywrapLog.write(str(item))
+		pywrapLog.write('> \n')
+
+
+# Override excepthook; will return uncaught exceptions in catchExceptions
+sys.excepthook = catchExceptions
 
 parser = argparse.ArgumentParser('Support script for ControlFREEQ client')
 
-# REQUIRED
+# REQUIRED 
 parser.add_argument('--runId', type=str, required=True)
-# check for file
-parser.add_argument('--input', type=str, required=True)
-parser.add_argument('--control', type=str, required=True)
-
-# check for directory
+parser.add_argument('--input', type=file, required=True)
+parser.add_argument('--control', type=file, required=True)
 parser.add_argument('--chrPath', type=str, required=True)
-# output path create if not there
 parser.add_argument('--outputPath', type=str, required=True)
-
-# check for file
-parser.add_argument('--bed', type=str, required=True)
+parser.add_argument('--bed', type=file, required=True)
 
 # OPTIONAL
 parser.add_argument('--step', type=int, default=250, required=False)
 parser.add_argument('--intercept', type=int, default=0, required=False)
 parser.add_argument('--threads', type=int, default=1, required=False)
 parser.add_argument('--minDepth', type=int, default=50, required=False)
-
-
-# if 0 don't include in parameters 
-parser.add_argument('--contamination', type=int, default=0)
+parser.add_argument('--contamination', type=int, default=0, required=False)
 
 
 ###############################################################################
@@ -96,63 +97,84 @@ parser.add_argument('--contamination', type=int, default=0)
 
 
 def main(*args):
-
-	# try:
-	# 	try:
-	print "here"
-	args = parser.parse_args()
-	try: 
-		config = ConfigParser.ConfigParser()
-
-		configFile = str(args.runId + '.config')
-		
-		pywrapConfig = open(args.outputPath + configFile, 'wb')
-		pywrapLog.write('\n'+logStamp + "--Successfully opened config file")
-
-		config.add_section('general')
-		config.add_section('sample')
-		config.add_section('control')
-		config.add_section('BAF')
-		config.add_section('target')
-
-
-	except IOError:
-		pywrapLog.write('\n'+logStamp + 'Invalid pathname, or invalid user permissions\n')
-		raise IOError('Invalid pathname, or invalid user permissions')
-
-	pywrapLog.write('\n'+logStamp + "--Successfully passed arguments\n")
 	
-	config.set('general', 'chrLenFile', '/mnt/data/hg19.len')
-	config.set('general', 'window', '1000'+'\n')
-	
-	config.set('general', 'step', args.step)
-	config.set('general', 'ploidy', '2')
-	config.set('general', 'chrFiles', str(args.chrPath)+'\n')
+	try:
+		try:
 
-	config.set('general', 'intercept', args.intercept)
-	config.set('general', 'minMappabilityPerWindow', '0.7'+'\n')
-	
-	config.set('general', 'outputDir', str(args.outputPath) + '\n')
-	
-	config.set('general', 'breakPointType', '4')
-	config.set('general', 'maxThreads', '4')
-	config.set('general', 'readCountThreshold', '50' + '\n')
-	
-	config.set('general', 'contaminationAdjustment', 'True')
-	config.set('general', 'contamination', '65')
-	
-	config.set('sample', 'mateFile', args.input)
-	config.set('sample', 'inputFormat', 'SAM')
-	config.set('sample', 'mateOrientation', '0')
+			args = parser.parse_args()
 
-	config.set('control', 'mateFile', args.control)
-	config.set('control', 'inputFormat', 'SAM')
-	config.set('control', 'mateOrientation', '0')
+			# check for outputPath directory; if not, then create
+			if not os.path.isdir(args.outputPath):
+				os.makedirs(args.outputPath)
 
-	config.set('target', 'captureRegions', args.bed)
+			# check for chrPath directory; if not, then create
+			if not os.path.isdir(args.chrPath):
+				os.makedirs(args.chrPath)
 
-	config.write(pywrapConfig)
+			try: 
+				config = ConfigParser.ConfigParser()
+
+				configFile = str(args.runId + '.config')
+				
+				pywrapConfig = open(args.outputPath + configFile, 'wb')
+				pywrapLog.write('\n'+logStamp + "-- Successfully opened config file")
+
+				config.add_section('general')
+				config.add_section('sample')
+				config.add_section('control')
+				config.add_section('BAF')
+				config.add_section('target')
+
+
+			except IOError:
+				pywrapLog.write('\n'+logStamp + 'Invalid pathname, or invalid user permissions\n')
+				raise IOError('Invalid pathname, or invalid user permissions')
+
+			pywrapLog.write('\n'+logStamp + "-- Successfully passed arguments\n")
+			
+			config.set('general', 'chrLenFile', '/mnt/data/hg19.len')
+			config.set('general', 'window', '1000'+'\n')
+			
+			config.set('general', 'step', args.step)
+			config.set('general', 'ploidy', '2')
+			config.set('general', 'chrFiles', str(args.chrPath)+'\n')
+
+			config.set('general', 'intercept', args.intercept)
+			config.set('general', 'minMappabilityPerWindow', '0.7'+'\n')
+			
+			config.set('general', 'outputDir', str(args.outputPath) + '\n')
+			
+			config.set('general', 'breakPointType', '4')
+			config.set('general', 'maxThreads', '4')
+			config.set('general', 'readCountThreshold', '50' + '\n')
+			
+			config.set('general', 'contaminationAdjustment', 'True')
+			if not args.contamination == 0:
+				config.set('general', 'contamination', args.contamination)
+			
+			config.set('sample', 'mateFile', args.input)
+			config.set('sample', 'inputFormat', 'SAM')
+			config.set('sample', 'mateOrientation', '0')
+
+			config.set('control', 'mateFile', args.control)
+			config.set('control', 'inputFormat', 'SAM')
+			config.set('control', 'mateOrientation', '0')
+
+			config.set('target', 'captureRegions', args.bed)
+
+
+
+			# write to config file
+			config.write(pywrapConfig)
+
+		except:
+			raise
+	except:
+		raise
+		return 2
 	return 0
+
+
 
 ###############################################################################
 ######### Run
