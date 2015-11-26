@@ -11,6 +11,8 @@ FROM ubuntu:14.04
 
 MAINTAINER Wade Schulz <wade.schulz@gmail.com>
 
+ENV DEBIAN_FRONTEND noninteractive
+
 # Add CRAN R repository and key files for repository
 RUN echo deb http://cran.rstudio.com/bin/linux/ubuntu trusty/ > /etc/apt/sources.list.d/rstudio.list
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 51716619E084DAB9
@@ -24,6 +26,7 @@ RUN apt-get -qqy install \
 		libcurl4-openssl-dev \
 		libicu-dev \
 		libxml2-dev \
+		python-dev \
 		python-pip \
 		r-base \
 		r-base-dev \
@@ -41,3 +44,5 @@ WORKDIR $HOME
 
 COPY sciclone-install.R sciclone-install.R
 RUN sudo Rscript sciclone-install.R
+
+ENV DEBIAN_FRONTEND interactive
