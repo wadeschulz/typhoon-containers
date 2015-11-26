@@ -24,9 +24,12 @@ RUN apt-get -qqy install \
 		libcurl4-openssl-dev \
 		libicu-dev \
 		libxml2-dev \
+		python-pip \
 		r-base \
 		r-base-dev \
 		r-cran-rgl
+
+RUN pip install rpy2
 
 # Create bio user and disable password requirement for sudo group
 RUN useradd -r -m -U -d /home/bio -s /bin/bash -c "Bio User" -p '' bio
