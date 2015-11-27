@@ -32,6 +32,7 @@ RUN apt-get -qqy install \
 		r-base-dev \
 		r-cran-rgl
 
+RUN pip install pyvcf
 RUN pip install rpy2
 
 # Create bio user and disable password requirement for sudo group
