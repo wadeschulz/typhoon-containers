@@ -1,18 +1,16 @@
-__author__    = 'Tommy Durant, Wade Schulz'
-__email__     = 'thomas.sakrison.durant@gmail.com, wade.schulz@gmail.com'
+__author__    = 'Wade Schulz'
+__email__     = 'wade.schulz@gmail.com'
 __version__   = '1.0'
-__date__      = '11/26/2015'
+__date__      = '11/30/2015'
 __pyver__     = '2.7'
 
 """
-#######################  SciCloneClient ########################################
+####################### Ensembl VEP Batch Script ###############################
 
-            Python based SciClone bulk runner
+            Python script to bulk process specimens with VEP
 
-            > SciClone python client for bulk run of VCF files
-            > Input: Directory with VCF files, output directory, and number of
-                      iterations to run SciClone
-            > Output: Clone clusterTable and clusterPlot, summary statistics
+            > Input: Directory with VEP input files
+            > Output: VEP annotation files
 
 ################################################################################
 """
