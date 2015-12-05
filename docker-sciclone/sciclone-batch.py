@@ -60,7 +60,7 @@ def CloneCount(path):
     return max
 
 # set minimum number variants/max clusters
-min_variants = 4
+min_variants = 5
 
 # Initialize R
 robjects.r('sink("/dev/null")')
