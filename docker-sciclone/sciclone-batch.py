@@ -79,10 +79,11 @@ pdf_path = join(out_base, "pdf")
 stat_path = join(out_base, "stats")
 
 artifacts = []
+artifact_path = join(input_path, "artifacts.txt")
 
 # if an artifact file exists, pull in list
-if os.path.exists(file_path):
-  with open(join(input_path, "artifacts.txt")) as f:
+if os.path.exists(artifact_path):
+  with open(artifact_path) as f:
     for line in f:
       artifacts.append(line.replace("chr", ""))
 
