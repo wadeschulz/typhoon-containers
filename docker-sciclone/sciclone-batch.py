@@ -99,12 +99,18 @@ results = [] # array for results
 stat_file = open(join(stat_path, 'stats.tsv'), 'w')
 stat_file.write('id\tvariants\titer\tavg clones\tmin clones\tmax clones\n')
 
+file_idx = 0
+total_files = len(input_files)
+
 for file in input_files:
+  file_idx = file_idx + 1
+
   # Create result object
   result = Result()
   del result.clone_counts[:]
   result.sample = file.split('.')[0]
-  print "Evaluating specimen: " + result.sample
+  
+  print "Evaluating specimen: " + result.sample + " (" + file_idx + " of " + total_files + ")"
   
   # Open VCF file and dat output file
   vcf_reader = vcf.Reader(open(join(input_path, file),'r'))
