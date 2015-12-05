@@ -145,15 +145,12 @@ for file in input_files:
         i = i + 1
         vaf = float(altRead / totalReads)*100.0
 
-        if i > 1 and vaf < 3:
-          continue
-
         # Exclude low read quality and homozygous (?germline)
-        if totalReads < 100 or vaf < 3 or vaf > 97:
+        if totalReads < 75 or vaf < 2.5 or vaf > 97.5:
           continue
 
         # Exclude possible germline mutations
-        if vaf > 47 and vaf < 53:
+        if vaf > 47.5 and vaf < 52.5:
           continue
 
         # Write remaining variant data to sciclone input file and increment total variant count
