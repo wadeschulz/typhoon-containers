@@ -59,6 +59,9 @@ def CloneCount(path):
                 max = cloneCount
     return max
 
+# set minimum number variants/max clusters
+min_variants = 4
+
 # Initialize R
 robjects.r('sink("/dev/null")')
 robjects.r('library(sciClone)')
@@ -79,14 +82,12 @@ pdf_path = join(out_base, "pdf")
 stat_path = join(out_base, "stats")
 
 artifacts = []
-artifact_path = join(input_path, "artifacts.txt")
+artifact_path = join(base_path, "artifacts.txt")
 
 # if an artifact file exists, pull in list
 if os.path.exists(artifact_path):
-  with open(artifact_path) as f:
-    for line in f:
-      artifacts.append(line.replace("chr", ""))
-
+  with open(artifact_path, 'r') as f:
+    artifacts.extend(f.read().splitlines())
 
 path_list = [dat_path, tbl_path, pdf_path, stat_path]
 for directory in path_list:
@@ -102,6 +103,7 @@ stat_file.write('id\tvariants\titer\tavg clones\tmin clones\tmax clones\n')
 file_idx = 0
 total_files = len(input_files)
 
+os.system('cls' if os.name == 'nt' else 'clear')
 for file in input_files:
   file_idx = file_idx + 1
 
@@ -110,7 +112,7 @@ for file in input_files:
   del result.clone_counts[:]
   result.sample = file.split('.')[0]
   
-  print "Evaluating specimen: " + result.sample + " (" + file_idx + " of " + total_files + ")"
+  print "Evaluating specimen: " + result.sample + " (" + str(file_idx) + " of " + str(total_files) + ")"
   
   # Open VCF file and dat output file
   vcf_reader = vcf.Reader(open(join(input_path, file),'r'))
@@ -143,11 +145,11 @@ for file in input_files:
         i = i + 1
         vaf = float(altRead / totalReads)*100.0
 
-        if i > 1 and vaf < 5:
+        if i > 1 and vaf < 3:
           continue
 
         # Exclude low read quality and homozygous (?germline)
-        if totalReads < 150 or altRead < 30 or vaf < 3 or vaf > 97:
+        if totalReads < 100 or vaf < 3 or vaf > 97:
           continue
 
         # Exclude possible germline mutations
@@ -162,6 +164,11 @@ for file in input_files:
 
   out_file.close()
   print "\tTotal variants: " + str(result.variants)
+
+  if result.variants < min_variants:
+    print "\tToo few variants for clonal evaulation"
+    continue
+
   print "\tEvaluating clonality..."
   # Set counter for number of iterations to run through sciclone
   curIter = 0
@@ -170,7 +177,7 @@ for file in input_files:
     pdf_file_path = join(pdf_path, result.sample + '-' + str(curIter) + '.pdf')
 
     robjects.r('inputData = read.table("' + join(dat_path, file + '.dat') + '")')
-    robjects.r('sc = sciClone(vafs=inputData, sampleName="", maximumClusters=5)')
+    robjects.r('sc = sciClone(vafs=inputData, sampleName="", maximumClusters=' + str(min_variants) + ')')
     robjects.r('writeClusterTable(sc, "' + table_file_path + '")')
     robjects.r('sc.plot1d(sc, "' + pdf_file_path + '")')
     robjects.r('rm(list=ls())')
