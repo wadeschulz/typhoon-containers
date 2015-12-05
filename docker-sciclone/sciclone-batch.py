@@ -79,9 +79,12 @@ pdf_path = join(out_base, "pdf")
 stat_path = join(out_base, "stats")
 
 artifacts = []
-with open(join(input_path, "artifacts.txt")) as f:
-  for line in f:
-    artifcats.append(line.replace("chr", ""))
+
+# if an artifact file exists, pull in list
+if os.path.exists(file_path):
+  with open(join(input_path, "artifacts.txt")) as f:
+    for line in f:
+      artifacts.append(line.replace("chr", ""))
 
 
 path_list = [dat_path, tbl_path, pdf_path, stat_path]
@@ -111,7 +114,7 @@ for file in input_files:
     try:
       # Check if current variant in artifact list, ignore if it is
       pos_str = str(record.CHROM).replace("chr", "") + ":" + str(record.POS)
-      if any(pos_str in s for s in some_list):
+      if any(pos_str in s for s in artifacts):
         continue
 
       # Cacluate total base reads
