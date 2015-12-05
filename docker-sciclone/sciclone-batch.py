@@ -78,6 +78,12 @@ tbl_path = join(out_base, "tables")
 pdf_path = join(out_base, "pdf")
 stat_path = join(out_base, "stats")
 
+artifacts = []
+with open(join(input_path, "artifacts.txt")) as f:
+  for line in f:
+    artifcats.append(line.replace("chr", ""))
+
+
 path_list = [dat_path, tbl_path, pdf_path, stat_path]
 for directory in path_list:
   if not os.path.exists(directory):
@@ -103,6 +109,11 @@ for file in input_files:
   # For each line in VCF, parse and generate output
   for record in vcf_reader:
     try:
+      # Check if current variant in artifact list, ignore if it is
+      pos_str = str(record.CHROM).replace("chr", "") + ":" + str(record.POS)
+      if any(pos_str in s for s in some_list):
+        continue
+
       # Cacluate total base reads
       totalReads = float(record.INFO['FDP'])
       # ...and number of reference reads
