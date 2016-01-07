@@ -16,5 +16,7 @@ RUN yum -y update
 RUN wget https://cghub.ucsc.edu/software/downloads/GeneTorrent/3.8.7/GeneTorrent-common-3.8.7-11.207.el6.x86_64.rpm
 RUN wget https://cghub.ucsc.edu/software/downloads/GeneTorrent/3.8.7/GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
 
-RUN -ivh GeneTorrent-common-3.8.7-11.207.el6.x86_64.rpm
-RUN -ivh GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
+RUN rpm -ivh GeneTorrent-common-3.8.7-11.207.el6.x86_64.rpm
+RUN rpm -ivh GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
+
+RUN rm -f GeneTorrent-common-3.8.7-11.207.el6.x86_64.rpm GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
