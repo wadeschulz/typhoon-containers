@@ -1,7 +1,7 @@
 ######################################################################################
 # Dockerfile to install cgHub download tools
 ######################################################################################
-# Version:          0.1.0
+# Version:          0.2.0
 # Software:         cghub
 # Software Version: 3.8.7
 # Base Image:       CentOS6
