@@ -12,8 +12,12 @@ FROM centos:centos6
 MAINTAINER Wade Schulz <wade.schulz@gmail.com>
 
 # Download and install prereqs and cghub
-RUN yum -y install wget libxerces-c-devel
+RUN yum -y install wget
 RUN yum -y update
+
+RUN mkdir /home/cgHub
+WORKDIR /home/cgHub
+
 RUN wget https://cghub.ucsc.edu/software/downloads/GeneTorrent/3.8.7/GeneTorrent-common-3.8.7-11.207.el6.x86_64.rpm
 RUN wget https://cghub.ucsc.edu/software/downloads/GeneTorrent/3.8.7/GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
 
@@ -21,5 +25,3 @@ RUN rpm -ivh GeneTorrent-common-3.8.7-11.207.el6.x86_64.rpm
 RUN rpm -ivh GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
 
 RUN rm -f GeneTorrent-common-3.8.7-11.207.el6.x86_64.rpm GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
-RUN mkdir /home/cgHub
-WORKDIR /home/cgHub
