@@ -20,3 +20,5 @@ RUN rpm -ivh GeneTorrent-common-3.8.7-11.207.el6.x86_64.rpm
 RUN rpm -ivh GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
 
 RUN rm -f GeneTorrent-common-3.8.7-11.207.el6.x86_64.rpm GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
+RUN mkdir /home/cgHub
+WORKDIR /home/cgHub
