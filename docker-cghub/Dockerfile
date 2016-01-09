@@ -12,7 +12,7 @@ FROM centos:centos6
 MAINTAINER Wade Schulz <wade.schulz@gmail.com>
 
 # Download and install prereqs and cghub
-RUN yum -y install wget xqilla libxerces-c-devel
+RUN yum -y install wget xqilla
 RUN yum -y update
 
 RUN mkdir /home/cgHub
