@@ -1,5 +1,6 @@
 ######################################################################################
-# Dockerfile to install cgHub download tools
+# Dockerfile to install cgHub download tools and add script to directly download
+# through docker run
 ######################################################################################
 # Version:          0.3.0
 # Software:         cghub
@@ -27,3 +28,5 @@ RUN rpm -ivh GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
 RUN rm -f GeneTorrent-common-3.8.7-11.207.el6.x86_64.rpm GeneTorrent-download-3.8.7-11.207.el6.x86_64.rpm
 
 RUN /bin/bash
+COPY cgdownload.py cgdownload.py
+ENTRYPOINT ["python", "cgdownload.py"]
