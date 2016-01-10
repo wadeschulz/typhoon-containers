@@ -5,7 +5,7 @@
 # Version:          0.3.0
 # Software:         cghub
 # Software Version: 3.8.7
-# Base Image:       CentOS6
+# Base Image:       molecular/cghub<-CentOS6
 ######################################################################################
 
 FROM molecular/cghub:latest
