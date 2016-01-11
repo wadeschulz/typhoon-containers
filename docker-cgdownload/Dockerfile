@@ -2,7 +2,7 @@
 # Dockerfile to install cgHub download tools and add script to directly download
 # through docker run
 ######################################################################################
-# Version:          0.3.0
+# Version:          0.4.0
 # Software:         cghub
 # Software Version: 3.8.7
 # Base Image:       molecular/cghub<-CentOS6

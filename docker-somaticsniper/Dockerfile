@@ -1,7 +1,7 @@
 ######################################################################################
 # Dockerfile to install SomaticSniper
 ######################################################################################
-# Version:          0.1.0
+# Version:          0.2.0
 # Software:         somaticsniper
 # Software Version: 1.5.0
 # Base Image:       molubuntu:0.1.0 <- ubuntu:14.04
@@ -22,3 +22,5 @@ RUN mkdir somatic-sniper/build
 WORKDIR somatic-sniper/build
 RUN cmake ../ && make deps && make -j && make test
 RUN sudo make install
+WORKDIR $HOME
+RUN rm -rf somatic-sniper
