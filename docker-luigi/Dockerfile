@@ -16,10 +16,10 @@ RUN yum -y update
 
 # install cron, python reqs for luigid
 RUN yum -y install \
-	cronie \
-	python-daemon \
-	python-pip \
-	sqlite 
+        cronie \
+        python-daemon \
+        python-pip \
+        sqlite
 
 # Create directories for luigid and modules
 RUN mkdir /opt/luigi && mkdir /opt/luigi/logs && mkdir /opt/luigi/modules
