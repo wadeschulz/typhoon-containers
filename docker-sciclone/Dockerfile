@@ -44,7 +44,8 @@ ENV HOME /home/bio
 WORKDIR $HOME
 
 COPY sciclone-install.R sciclone-install.R
-COPY sciclone-batch.py sciclone-batch.py
+COPY sciclone-vcf-batch.py sciclone-vcf-batch.py
+COPY sciclone-formatted-batch.py sciclone-formatted-batch.py
 RUN sudo Rscript sciclone-install.R && rm -rf sciclone-install.R
 
 ENV DEBIAN_FRONTEND interactive
